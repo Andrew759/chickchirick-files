@@ -1,0 +1,47 @@
+services:
+  seaweedfs:
+    image: chrislusf/seaweedfs:latest
+    ports:
+      - "9333:9333"
+      - "8084:8080"
+      - "8888:8888"
+      - "8333:8333"
+    command: 'server -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json -dir=/data'
+    volumes:
+      - ./data:/data
+      - ./build/dev/s3.json:/etc/seaweedfs/s3.json:ro
+    restart: unless-stopped
+    networks:
+      - backend-files
+
+  nginx-files:
+    build: ./build/dev/nginx
+    ports:
+      - '84:80'
+    depends_on:
+      - api-files
+    networks:
+      - backend-files
+      - chickchirick-shared-network
+
+  api-files:
+    build:
+      context: .
+      dockerfile: ./build/dev/Dockerfile
+    ports:
+      - "8085:8080"
+      - "40004:40000"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - "seccomp=unconfined"
+    volumes:
+      - .:/app
+    networks:
+      - backend-files
+      - chickchirick-shared-network
+
+networks:
+  backend-files:
+  chickchirick-shared-network:
+    external: true

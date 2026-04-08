@@ -1,0 +1,6 @@
+services: {}
+
+networks:
+  backend-files:
+  chickchirick-shared-network:
+    external: true
