@@ -40,7 +40,7 @@ func (fc *FileController) UploadFile(c *gin.Context) {
 		}
 	}(file)
 
-	_, err = fc.DI.Client.PutObject(c, &s3.PutObjectInput{
+	_, err = fc.DI.Client.PutObject(c.Request.Context(), &s3.PutObjectInput{
 		Bucket: aws.String(viper.GetString(chirick_config.SeaweedMainBucket)),
 		Key:    aws.String(fileUuid),
 		Body:   file,
