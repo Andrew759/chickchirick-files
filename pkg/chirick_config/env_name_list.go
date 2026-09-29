@@ -6,6 +6,7 @@ const (
 	UserAPPUrl        = "USER_APP_URL"
 	AuthAppUrl        = "AUTH_APP_URL"
 	MessagesAppUrl    = "MESSAGES_APP_URL"
+	FrontendAppUrl    = "FRONTEND_APP_URL"
 	SeaweedFSKey      = "SEAWEED_FS_KEY"
 	SeaweedFSSECRET   = "SEAWEED_FS_SECRET"
 	SeaweedMainBucket = "SEAWEED_MAIN_BUCKET"

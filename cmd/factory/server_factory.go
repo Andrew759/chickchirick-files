@@ -21,13 +21,23 @@ func BuildAndServe(s3Client *s3.Client) {
 func BuildServer(awsClient *s3.Client) error {
 	e := gin.Default()
 
-	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{
-		viper.GetString(chirick_config.UserAPPUrl),
-		viper.GetString(chirick_config.MessagesAppUrl),
+	config := cors.Config{
+		AllowCredentials: true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"},
+		AllowHeaders: []string{
+			"Origin",
+			"Content-Type",
+			"Accept",
+			"Authorization",
+			"X-Requested-With",
+		},
+		AllowOrigins: []string{
+			viper.GetString(chirick_config.UserAPPUrl),
+			viper.GetString(chirick_config.MessagesAppUrl),
+			viper.GetString(chirick_config.FrontendAppUrl),
+		},
 	}
 	e.Use(cors.New(config))
-
 	InitFileServer(e, awsClient)
 
 	err := e.Run()
